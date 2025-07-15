@@ -3,6 +3,7 @@
 from setuptools import find_packages, setup
 from os.path import join, dirname
 from os import walk
+from pathlib import Path
 
 examples = {}
 for root, subFolders, files in walk('examples'):
@@ -14,14 +15,27 @@ for root, subFolders, files in walk('examples'):
             examples[directory] = []
         examples[directory].append(filename)
 
+
+def glob_paths(*patterns, excludes=('.pyc', )):
+    files = []
+    base = Path(join(dirname(__file__), 'kivy3'))
+
+    for pat in patterns:
+        for f in base.glob(pat):
+            if f.suffix in excludes:
+                continue
+            files.append(str(f.relative_to(base)))
+    return files
+
 setup(
     name='kivy3',
     version='0.1',
     description='Kivy extensions for 3D graphics',
     author='Niko Skrypnik',
     author_email='nskrypnik@gmail.com',
-    include_package_data=True,
+    package_dir={'kivy3': 'kivy3'},
+    package_data={'kivy': glob_paths('**/*.glsl', '**/*.png')},
     packages=find_packages(exclude=("tests",)),
     data_files=list(examples.items()),
-    requires=['kivy', ]
+    install_requires=['kivy']
 )

@@ -34,7 +34,7 @@ setup(
     author='Niko Skrypnik',
     author_email='nskrypnik@gmail.com',
     package_dir={'kivy3': 'kivy3'},
-    package_data={'kivy': glob_paths('**/*.glsl', '**/*.png')},
+    package_data={'kivy3': glob_paths('**/*.glsl', '**/*.png')},
     packages=find_packages(exclude=("tests",)),
     data_files=list(examples.items()),
     install_requires=['kivy']
